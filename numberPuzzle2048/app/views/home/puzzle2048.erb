@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>2048</title>
+		<% stylesheet_link_tag 'pz2048', media:'all', 'data-turbolinks-track' => true %>
+		<% javascript_include_tag 'puzzle/pz2048' %>
+	</head>
+	<body>
+		<div id="window">
+		<%# タイトル・スコア #%>
+			<div id="top">
+				<span class="top-div">2048</span>
+				<div class="top-div">
+					<span class="score-txt">SCORE</span>
+					<p id="score">0</p>
+				</div>
+				<div id="bscore-board" class="top-div"> 
+					<span class="score-txt"> BEST  </span>
+					<p id="best-score">0</p>
+				</div>
+			</div>
+			<%# 説明・スタートボタン用 #%>
+			<div id="mid">
+				<span id="explain">同じ数字を足して<br>2048を作ろう！</span>
+				<span id="new-game-button" onclick="newGame();">NEW GAME</span>
+			</div>
+			<%#ゲーム本体#%>
+			<table id="gbody">
+				<tr><td><div id="0" class="cell">0</div></td><td><div id="1" class="cell">0</div></td><td><div id="2" class="cell">0</div></td><td><div id="3" class="cell">0</div></td></tr>
+				<tr><td><div id="4" class="cell">0</div></td><td><div id="5" class="cell">0</div></td><td><div id="6" class="cell">0</div></td><td><div id="7" class="cell">0</div></td></tr>
+				<tr><td><div id="8" class="cell">0</div></td><td><div id="9" class="cell">0</div></td><td><div id="10" class="cell">0</div></td><td><div id="11" class="cell">0</div></td></tr>
+				<tr><td><div id="12" class="cell">0</div></td><td><div id="13" class="cell">0</div></td><td><div id="14" class="cell">0</div></td><td><div id="15" class="cell">0</div></td></tr>
+			</table>
+			<div id="gameover"><span>GameOver</span></div>
+			<%#操作ボタン#%>
+			<span id="ar1" class="arrow" onclick="arrowclick('up');">↑</span>
+			<span id="ar2" class="arrow" onclick="arrowclick('left');">←</span>
+			<span id="ar3" class="arrow" onclick="arrowclick('down');">↓</span>
+			<span id="ar4" class="arrow" onclick="arrowclick('right');">→</span>
+		</div>
+
+	</body>
+</html>
