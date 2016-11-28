@@ -1,0 +1,209 @@
+
+var type={"down":[[12,8,4,0],[13,9,5,1],[14,10,6,2],[15,11,7,3]],
+ "up":[[0,4,8,12],[1,5,9,13],[2,6,10,14],[3,7,11,15]],
+ "left":[[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15]],
+ "right":[[3,2,1,0],[7,6,5,4],[11,10,9,8],[15,14,13,12]]};
+var cell_nums=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var bestscore=0;
+window.onload=function(){
+	newGame();
+}
+
+function arrowclick(arrow){
+	var direction=type[arrow];
+	var ismoved=calculate(direction,false);
+	if(ismoved==false){
+		if(checkGameover(arrow)){
+			gameover();
+		}
+	}else{
+		newCell();
+		changeCells();
+		updateScore();
+	}
+}
+
+function newGame(){
+	clearCells();
+	newCell();
+	changeCells();
+	updateScore();
+}
+
+function calculate(direction, checking){//gameoverの判定用ならchecking=true
+	var temporaly_cell_nums=cell_nums;
+	var ismoved=false;
+	var num=-1;
+	for(var i=0; i<4; i++){
+		for(var ii=0; ii<4; ii++){
+			if(temporaly_cell_nums[direction[i][ii]]!=0){//該当セルが0以外のとき
+				if(num==-1){
+					num=direction[i][ii];	//該当セルを記録
+				}else{
+					if(temporaly_cell_nums[num]==temporaly_cell_nums[direction[i][ii]]){//記録セルと該当セルの値が一致したとき
+						temporaly_cell_nums[num]*=2;
+						temporaly_cell_nums[direction[i][ii]]=0;
+						num=-1;
+						ismoved=true;//セルの結合が起きたかの判定(GameOver判定用)
+					}else{
+						num=direction[i][ii];//該当セルを記録
+					}
+				}
+			}
+		}
+		num=-1;
+		var j=0;
+		while(j<4){
+			if(num==-1){
+				if(temporaly_cell_nums[direction[i][j]]==0){//空のセルを記録
+					num=j;
+				}
+			}else{
+				if(temporaly_cell_nums[direction[i][j]]!=0){//空のセルに該当セルの値を渡す
+					temporaly_cell_nums[direction[i][num]]=temporaly_cell_nums[direction[i][j]];
+					temporaly_cell_nums[direction[i][j]]=0;
+					j=num;
+					num=-1;
+					ismoved=true;//こちらはセルが動いたかの判定
+				}
+			}
+			j++;
+		}
+	}
+	if(checking==false){
+		cell_nums=temporaly_cell_nums;
+	}
+	return ismoved;
+}
+
+function newCell(){
+	var zeros=new Array();
+	for(var i=0; i<16; i++){
+		if(cell_nums[i]==0){//空のセルの番地をzerosに記録
+			zeros.push(i);
+		}
+	}
+	var new_number=0;
+	if(Math.random()<0.8){
+		new_number=2;
+	}else{
+		new_number=4;
+	}
+	var new_num_cell=zeros[Math.floor(Math.random()*zeros.length)];
+	cell_nums[new_num_cell]=new_number;
+}
+
+function changeCells(){
+	for(var i=0; i<16; i++){
+		var num=cell_nums[i];
+		var cell=document.getElementById(String(i));
+		cell.style.color='white';
+		switch(num){
+			case 0:
+				cell.style.cssText = "background-color:gray !important;";
+				cell.style.color='gray';
+				break;
+			case 2:
+				cell.style.cssText = "background-color:#e1e6f0 !important;";
+				cell.style.color='black';
+				break;
+			case 4:
+				cell.style.cssText = "background-color:#ffebcd !important;";
+				cell.style.color='black';
+				break;
+			case 8:
+				cell.style.cssText = "background-color:#ff8c50 !important;";
+				break;
+			case 16:
+				cell.style.cssText = "background-color:#ff8c64 !important;";
+				break;
+			case 32:
+				cell.style.cssText = "background-color:#dc143c !important;";
+				break;
+			case 64:
+				cell.style.cssText = "background-color:#ff0032 !important;";
+			case 128:
+				cell.style.cssText = "background-color:#ffff78 !important;";
+				break;
+			case 256:
+				cell.style.cssText = "background-color:#ffff64 !important;";
+				break;
+			case 512:
+				cell.style.cssText = "background-color:#ffff50 !important;";
+				break;
+			case 1024:
+				cell.style.cssText = "background-color:#ffff3c !important;";
+				break;
+			case 2048:
+				cell.style.cssText = "background-color:#ffff28 !important;";
+				break;
+			default:
+				cell.style.cssText = "background-color:#ffff00 !important;";
+		}
+		
+		cell.innerHTML=String(num);
+		
+		
+	}
+}
+
+function updateScore(){
+	//セルの値を全て足して計算
+	var score=0
+	for(var number=0; number<16; number++){
+		score+=Number(cell_nums[number]);
+	}
+	document.getElementById("score").innerHTML=String(score);
+	//ベストスコアの更新
+	if(score>bestscore){
+		bestscore=score;
+		document.getElementById("best-score").innerHTML=String(bestscore);
+	}
+}
+
+function checkGameover(arrow){
+	var Game_Over=true;
+	var ismoved;
+	for(var key in type){//すでに実行した方向以外を全て計算
+		var check_direction=type[key];
+		if(check_direction!=arrow){
+			ismoved=calculate(check_direction,true)
+			if(ismoved){//ゲームが続く余地がある場合
+				Game_Over=false;
+				break;
+			}
+		}
+	}
+	return gameover;
+}
+
+function gameover(){
+	var panel=document.getElementById("game-over");
+	//IE　エラーのためコメントアウト
+	//panel.style.filter='alpha(opacity=70)';
+	//Firefox,netscope
+	panel.style.MozOpacity=0.7;
+	//Chrome,Safari,Opera
+	panel.style.opacity=0.7;
+	//操作ボタンを無効化
+	document.getElementById("ar1").disabled=true;
+	document.getElementById("ar2").disabled=true;
+	document.getElementById("ar3").disabled=true;
+	document.getElementById("ar4").disabled=true;
+}
+
+function clearCells(){
+	cell_nums=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var panel=document.getElementById("game-over");
+	//IE
+	//panel.style.filter='alpha(opacity=0)';
+	//Firefox,netscope
+	panel.style.MozOpacity=0;
+	//Chrome,Safari,Opera
+	panel.style.opacity=0;
+	//操作ボタンを無効化
+	document.getElementById("ar1").disabled=false;
+	document.getElementById("ar2").disabled=false;
+	document.getElementById("ar3").disabled=false;
+	document.getElementById("ar4").disabled=false;
+}

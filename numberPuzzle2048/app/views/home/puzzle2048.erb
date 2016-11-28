@@ -4,6 +4,14 @@
 		<title>2048</title>
 		<% stylesheet_link_tag 'pz2048', media:'all', 'data-turbolinks-track' => true %>
 		<% javascript_include_tag 'puzzle/pz2048' %>
+		<%#<script type="text/javascript">
+　<!--
+function newGame(){
+	document.getElementById('gameover').style.opacity=0.7;
+	confirm("押されました");
+}
+　// -->
+</script>#%>
 	</head>
 	<body>
 		<div id="window">
@@ -31,7 +39,7 @@
 				<tr><td><div id="8" class="cell">0</div></td><td><div id="9" class="cell">0</div></td><td><div id="10" class="cell">0</div></td><td><div id="11" class="cell">0</div></td></tr>
 				<tr><td><div id="12" class="cell">0</div></td><td><div id="13" class="cell">0</div></td><td><div id="14" class="cell">0</div></td><td><div id="15" class="cell">0</div></td></tr>
 			</table>
-			<div id="gameover"><span>GameOver</span></div>
+			<div id="game-over"><span>GameOver</span></div>
 			<%#操作ボタン#%>
 			<span id="ar1" class="arrow" onclick="arrowclick('up');">↑</span>
 			<span id="ar2" class="arrow" onclick="arrowclick('left');">←</span>
