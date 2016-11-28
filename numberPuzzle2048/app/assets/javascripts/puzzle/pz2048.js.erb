@@ -8,6 +8,23 @@ var bestscore=0;
 window.onload=function(){
 	newGame();
 }
+window.addEventListener("keydown",keydown);
+function keydown(event){
+	switch(event.keyCode){
+		case 37:
+			arrowclick("left");
+			break;
+		case 38:
+			arrowclick("up");
+			break;
+		case 39:
+			arrowclick("right");
+			break;
+		case 40:
+			arrowclick("down");
+			break;
+	}
+}
 
 function arrowclick(arrow){
 	var direction=type[arrow];
