@@ -51,15 +51,17 @@ function calculate(direction, checking){//gameoverの判定用ならchecking=tru
 	var temporaly_cell_nums=cell_nums;
 	var ismoved=false;
 	var num=-1;
+	var number=-1;
 	for(var i=0; i<4; i++){
+		num=-1;
 		for(var ii=0; ii<4; ii++){
 			if(temporaly_cell_nums[direction[i][ii]]!=0){//該当セルが0以外のとき
 				if(num==-1){
 					num=direction[i][ii];	//該当セルを記録
 				}else{
 					if(temporaly_cell_nums[num]==temporaly_cell_nums[direction[i][ii]]){//記録セルと該当セルの値が一致したとき
-						temporaly_cell_nums[num]*=2;
-						temporaly_cell_nums[direction[i][ii]]=0;
+						temporaly_cell_nums[direction[i][ii]]*=2;
+						temporaly_cell_nums[num]=0;
 						num=-1;
 						ismoved=true;//セルの結合が起きたかの判定(GameOver判定用)
 					}else{
@@ -68,19 +70,19 @@ function calculate(direction, checking){//gameoverの判定用ならchecking=tru
 				}
 			}
 		}
-		num=-1;
+		number=-1;
 		var j=0;
 		while(j<4){
-			if(num==-1){
+			if(number==-1){
 				if(temporaly_cell_nums[direction[i][j]]==0){//空のセルを記録
-					num=j;
+					number=j;
 				}
 			}else{
 				if(temporaly_cell_nums[direction[i][j]]!=0){//空のセルに該当セルの値を渡す
-					temporaly_cell_nums[direction[i][num]]=temporaly_cell_nums[direction[i][j]];
+					temporaly_cell_nums[direction[i][number]]=temporaly_cell_nums[direction[i][j]];
 					temporaly_cell_nums[direction[i][j]]=0;
-					j=num;
-					num=-1;
+					j=number;
+					number=-1;
 					ismoved=true;//こちらはセルが動いたかの判定
 				}
 			}
@@ -183,15 +185,16 @@ function checkGameover(arrow){
 	var ismoved;
 	for(var key in type){//すでに実行した方向以外を全て計算
 		var check_direction=type[key];
-		if(check_direction!=arrow){
+		if(key!=arrow){
 			ismoved=calculate(check_direction,true)
 			if(ismoved){//ゲームが続く余地がある場合
 				Game_Over=false;
+
 				break;
 			}
 		}
 	}
-	return gameover;
+	return　Game_over;
 }
 
 function gameover(){

@@ -5,3 +5,28 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+@score = Score.new
+@score.name = " "
+@score.score = 0
+@score.save
+
+@score = Score.new
+@score.name = " "
+@score.score = 0
+@score.save
+
+@score = Score.new
+@score.name = " "
+@score.score = 0
+@score.save
+
+@score = Score.new
+@score.name = " "
+@score.score = 0
+@score.save
+
+@score = Score.new
+@score.name = " "
+@score.score = 0
+@score.save
