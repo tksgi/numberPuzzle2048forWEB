@@ -5,11 +5,14 @@ var type={"down":[[12,8,4,0],[13,9,5,1],[14,10,6,2],[15,11,7,3]],
  "right":[[3,2,1,0],[7,6,5,4],[11,10,9,8],[15,14,13,12]]};
 var cell_nums=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var bestscore=0;
-window.onload=function(){
+var score=0;
+var isgameover=false;
+window.onload=function(){//ページロード時の動作
+	bestscore=document.getElementById("best-score").innerHTML;
 	newGame();
 }
-window.addEventListener("keydown",keydown);
-function keydown(event){
+window.addEventListener("keydown",keydown);//キーイベント発生時にkeydownを呼び出す
+function keydown(event){//キーイベント発生時の動作
 	switch(event.keyCode){
 		case 37:
 			arrowclick("left");
@@ -26,9 +29,9 @@ function keydown(event){
 	}
 }
 
-function arrowclick(arrow){
+function arrowclick(arrow){//矢印ボタン押下時の動作
 	var direction=type[arrow];
-	var ismoved=calculate(direction,false);
+	var ismoved=calculate(direction,false);//セルに動きがあったかをismovedに格納
 	if(ismoved==false){
 		if(checkGameover(arrow)){
 			gameover();
@@ -40,7 +43,12 @@ function arrowclick(arrow){
 	}
 }
 
-function newGame(){
+function newGame(){//ゲーム更新の動作
+	if(!(isgameover)){
+		if(score>document.getElementById("score5").innerHTML){
+			updateRanking();
+		}
+	}
 	clearCells();
 	newCell();
 	changeCells();
@@ -95,7 +103,7 @@ function calculate(direction, checking){//gameoverの判定用ならchecking=tru
 	return ismoved;
 }
 
-function newCell(){
+function newCell(){//ランダムに２or4のセルを発生させる動作
 	var zeros=new Array();
 	for(var i=0; i<16; i++){
 		if(cell_nums[i]==0){//空のセルの番地をzerosに記録
@@ -112,7 +120,7 @@ function newCell(){
 	cell_nums[new_num_cell]=new_number;
 }
 
-function changeCells(){
+function changeCells(){//セルの中身を見た目に反映
 	for(var i=0; i<16; i++){
 		var num=cell_nums[i];
 		var cell=document.getElementById(String(i));
@@ -166,9 +174,9 @@ function changeCells(){
 	}
 }
 
-function updateScore(){
+function updateScore(){//スコア計算
 	//セルの値を全て足して計算
-	var score=0
+	score=0
 	for(var number=0; number<16; number++){
 		score+=Number(cell_nums[number]);
 	}
@@ -180,7 +188,7 @@ function updateScore(){
 	}
 }
 
-function checkGameover(arrow){
+function checkGameover(arrow){//ゲームオーバー判定
 	var Game_Over=true;
 	var ismoved;
 	for(var key in type){//すでに実行した方向以外を全て計算
@@ -189,15 +197,15 @@ function checkGameover(arrow){
 			ismoved=calculate(check_direction,true)
 			if(ismoved){//ゲームが続く余地がある場合
 				Game_Over=false;
-
 				break;
 			}
 		}
 	}
-	return　Game_over;
+	return　Game_Over;
 }
 
 function gameover(){
+	isgameover=true;
 	var panel=document.getElementById("game-over");
 	//IE　エラーのためコメントアウト
 	//panel.style.filter='alpha(opacity=70)';
@@ -210,9 +218,13 @@ function gameover(){
 	document.getElementById("ar2").disabled=true;
 	document.getElementById("ar3").disabled=true;
 	document.getElementById("ar4").disabled=true;
+	if(score>document.getElementById("score5").innerHTML){
+		updateRanking();
+	}
 }
 
 function clearCells(){
+	isgameover=false;
 	cell_nums=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 	var panel=document.getElementById("game-over");
 	//IE
@@ -226,4 +238,9 @@ function clearCells(){
 	document.getElementById("ar2").disabled=false;
 	document.getElementById("ar3").disabled=false;
 	document.getElementById("ar4").disabled=false;
+}
+
+function updateRanking(){
+	confirm("ランキングを更新します");
+	window.location.href="rank?score="+String(score);
 }

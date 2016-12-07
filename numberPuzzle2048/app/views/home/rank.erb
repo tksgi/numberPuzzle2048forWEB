@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+	<head>
+	<% stylesheet_link_tag 'rank' %>
+	</head>
+	<body>
+		<table id="newranking" border=1>
+			<caption><strong>現在のランキング</strong></caption>
+			<tr><th>順位</th><th>スコア</th></tr>
+			<% @newscore.order("rank") %>
+			<% @newscore.each do |score| %>
+			<tr>
+				<td><%= score.rank %></td>
+				<td id=<%= "score#{score.rank}" %>><%= score.score %></td>
+			</tr>
+			<% end %>
+			<a href="../2048">戻る</a>		</table>
+	</body>
+</html>

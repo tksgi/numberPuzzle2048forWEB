@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20161201054052) do
 
   create_table "scores", force: :cascade do |t|
-    t.string   "name"
+    t.integer  "rank"
     t.integer  "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

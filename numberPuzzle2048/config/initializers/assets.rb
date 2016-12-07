@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( pz2048.css )
 Rails.application.config.assets.precompile += %w( puzzle/pz2048.js )
+Rails.application.config.assets.precompile += %w( rank.css )

@@ -5,28 +5,31 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Score.delete_all 
+
+Score.connection.execute("delete from sqlite_sequence where name='scores'")
 
 @score = Score.new
-@score.name = " "
-@score.score = 0
+@score.rank = 1
+@score.score = 2048
 @score.save
 
 @score = Score.new
-@score.name = " "
-@score.score = 0
+@score.rank = 2
+@score.score = 1024
 @score.save
 
 @score = Score.new
-@score.name = " "
-@score.score = 0
+@score.rank = 3
+@score.score = 512
 @score.save
 
 @score = Score.new
-@score.name = " "
-@score.score = 0
+@score.rank = 4
+@score.score = 256
 @score.save
 
 @score = Score.new
-@score.name = " "
-@score.score = 0
+@score.rank = 5
+@score.score = 128
 @score.save

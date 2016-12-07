@@ -16,7 +16,7 @@
 				</div>
 				<div id="bscore-board" class="top-div"> 
 					<span class="score-txt"> BEST  </span>
-					<p id="best-score"><%= @score.find_by(:id => 1).score %></p>
+					<p id="best-score"><%= @score.find_by(:rank => 1).score %></p>
 				</div>
 			</div>
 			<%# 説明・スタートボタン用 #%>
@@ -40,14 +40,13 @@
 		</div>
 
 		<table id="ranking" border="1">
-		<caption><strong>スコアランキング</strong></caption>
-			<tr><th>順位</th><th>名前</th><th>スコア</th></tr>
-			<% @score.order("id") %>
+		<caption><strong>ランキング</strong></caption>
+			<tr><th>順位</th><th>スコア</th></tr>
+			<% @score.order("rank") %>
 			<% @score.each do |scores| %>
 			<tr>
-				<td><%= scores.id %></td>
-				<td><%= scores.name %></td>
-				<td><%= scores.score %></td>
+				<td><%= scores.rank %></td>
+				<td id=<%= "score#{scores.rank}" %>><%= scores.score %></td>
 			</tr>
 			<% end %>
 		</table>
